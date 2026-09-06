@@ -1,13 +1,14 @@
 "use client";
 
+import Link from "next/link";
 import { Logo } from "@/components/ui/Logo";
 import { Section } from "@/components/ui/Section";
 import { track } from "@/lib/analytics";
 import { siteConfig } from "@/lib/siteConfig";
 
 export function Footer() {
-  const { linkedin, instagram, contactEmail } = siteConfig.social;
-  const hasSocial = Boolean(linkedin || instagram || contactEmail);
+  const { linkedin, instagram, contactEmail, instagramHandle } =
+    siteConfig.social;
 
   return (
     <Section
@@ -15,7 +16,7 @@ export function Footer() {
       className="border-t border-[var(--border)] pb-10 pt-14"
       containerClassName="space-y-10"
     >
-      <div className="flex flex-col gap-10 sm:flex-row sm:items-start sm:justify-between">
+      <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
         <div>
           <div className="flex items-center gap-3">
             <Logo variant="mark" size={36} />
@@ -23,16 +24,55 @@ export function Footer() {
               {siteConfig.brand.name}
             </p>
           </div>
-          <p className="mt-4 text-sm text-muted">
-            {siteConfig.event.city}, {siteConfig.event.region}
+          <p className="mt-5 max-w-xs font-display text-lg leading-snug text-ivory/80">
+            Right People.
+            <br />
+            One Room.
+            <br />
+            Endless Possibilities.
           </p>
-          <p className="mt-6 max-w-xs font-display text-base text-ivory/75">
-            {siteConfig.brand.tagline}
+          <p className="mt-5 text-sm text-muted">
+            {siteConfig.event.city}, {siteConfig.event.region}
           </p>
         </div>
 
-        {hasSocial ? (
-          <ul className="flex flex-wrap gap-6 text-[0.7rem] tracking-[0.16em] uppercase">
+        <div className="grid gap-8 sm:grid-cols-2">
+          <ul className="space-y-3 text-[0.7rem] tracking-[0.16em] uppercase">
+            {siteConfig.footerNav.map((item) => (
+              <li key={item.href}>
+                {item.href.startsWith("mailto:") ? (
+                  <a href={item.href} className="nav-link text-muted">
+                    {item.label}
+                  </a>
+                ) : (
+                  <Link href={item.href} className="nav-link text-muted">
+                    {item.label}
+                  </Link>
+                )}
+              </li>
+            ))}
+          </ul>
+
+          <ul className="space-y-3 text-[0.7rem] tracking-[0.16em] uppercase">
+            {instagram ? (
+              <li>
+                <a
+                  href={instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="nav-link text-muted"
+                  onClick={() =>
+                    track({
+                      event: "outbound_social",
+                      label: "instagram",
+                      href: instagram,
+                    })
+                  }
+                >
+                  Instagram {instagramHandle}
+                </a>
+              </li>
+            ) : null}
             {linkedin ? (
               <li>
                 <a
@@ -52,30 +92,11 @@ export function Footer() {
                 </a>
               </li>
             ) : null}
-            {instagram ? (
-              <li>
-                <a
-                  href={instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="nav-link text-muted"
-                  onClick={() =>
-                    track({
-                      event: "outbound_social",
-                      label: "instagram",
-                      href: instagram,
-                    })
-                  }
-                >
-                  Instagram
-                </a>
-              </li>
-            ) : null}
             {contactEmail ? (
               <li>
                 <a
                   href={`mailto:${contactEmail}`}
-                  className="nav-link text-muted"
+                  className="nav-link text-muted normal-case tracking-normal"
                   onClick={() =>
                     track({
                       event: "outbound_social",
@@ -84,16 +105,12 @@ export function Footer() {
                     })
                   }
                 >
-                  Contact
+                  {contactEmail}
                 </a>
               </li>
             ) : null}
           </ul>
-        ) : (
-          <p className="text-[0.7rem] tracking-[0.14em] text-muted uppercase">
-            Social channels coming soon
-          </p>
-        )}
+        </div>
       </div>
 
       <div className="flex flex-col gap-3 border-t border-[var(--border)] pt-8 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">

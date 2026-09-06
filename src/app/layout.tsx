@@ -19,16 +19,19 @@ const sans = Instrument_Sans({
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
-  title: siteConfig.seo.title,
+  title: {
+    default: siteConfig.seo.title,
+    template: `%s | ${siteConfig.brand.name}`,
+  },
   description: siteConfig.seo.description,
   applicationName: siteConfig.brand.name,
   keywords: [
     "The Ambition Room",
-    "Halifax networking",
-    "entrepreneur networking Halifax",
-    "professional community Halifax",
-    "Halifax #001",
-    "curated networking event",
+    "private community",
+    "entrepreneurs",
+    "ambitious professionals",
+    "Halifax",
+    "membership",
   ],
   authors: [{ name: siteConfig.brand.name }],
   creator: siteConfig.brand.name,
@@ -53,7 +56,7 @@ export const metadata: Metadata = {
     title: siteConfig.seo.title,
     description: siteConfig.seo.description,
   },
-  category: "Networking",
+  category: "Community",
 };
 
 export const viewport: Viewport = {
@@ -63,35 +66,27 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-function EventJsonLd() {
-  const startDate = `${siteConfig.event.dateISO}T19:00:00-03:00`;
-  const endDate = `${siteConfig.event.dateISO}T22:00:00-03:00`;
+function OrganizationJsonLd() {
+  const sameAs = [
+    siteConfig.social.instagram,
+    siteConfig.social.linkedin,
+  ].filter(Boolean);
 
   const data = {
     "@context": "https://schema.org",
-    "@type": "Event",
-    name: `${siteConfig.brand.name} — ${siteConfig.event.edition}`,
+    "@type": "Organization",
+    name: siteConfig.brand.name,
+    url: siteConfig.url,
+    logo: `${siteConfig.url}/logo-mark.png`,
+    email: siteConfig.social.contactEmail,
     description: siteConfig.seo.description,
-    startDate,
-    endDate,
-    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-    eventStatus: "https://schema.org/EventScheduled",
-    image: [`${siteConfig.url}/opengraph-image`],
-    organizer: {
-      "@type": "Organization",
-      name: siteConfig.brand.name,
-      url: siteConfig.url,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: siteConfig.event.city,
+      addressRegion: siteConfig.event.region,
+      addressCountry: "CA",
     },
-    location: {
-      "@type": "Place",
-      name: `${siteConfig.event.city}, ${siteConfig.event.region}`,
-      address: {
-        "@type": "PostalAddress",
-        addressLocality: siteConfig.event.city,
-        addressRegion: siteConfig.event.region,
-        addressCountry: "CA",
-      },
-    },
+    ...(sameAs.length ? { sameAs } : {}),
   };
 
   return (
@@ -117,7 +112,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </a>
         <div className="grain" aria-hidden="true" />
         {children}
-        <EventJsonLd />
+        <OrganizationJsonLd />
       </body>
     </html>
   );

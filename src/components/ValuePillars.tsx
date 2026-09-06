@@ -5,28 +5,31 @@ const pillars = [
   {
     number: "01",
     title: "Curated",
-    body: "Every attendee begins with an application. We build the room intentionally rather than opening the doors indiscriminately.",
+    body: "Membership grows deliberately. We protect the quality of the community rather than optimizing for the largest possible number of people.",
   },
   {
     number: "02",
     title: "Connected",
-    body: "The experience is designed to make real conversations easier. Less pitching. More curiosity.",
+    body: "The environment is designed to make real conversations easier. Less performance. Less pitching. More curiosity.",
   },
   {
     number: "03",
     title: "Ambitious",
-    body: "The common denominator is not title or status. It is the desire to build, grow, contribute, and move forward.",
+    body: "The common denominator is not title or status. It is the seriousness with which people approach what they are building, pursuing or contributing.",
   },
 ] as const;
 
 export function ValuePillars() {
   return (
-    <Section id="the-room" className="border-y border-[var(--border)] bg-surface py-24 sm:py-28 lg:py-32">
+    <Section
+      id="the-room"
+      className="py-24 sm:py-28 lg:py-32"
+    >
       <Reveal>
         <div className="mb-14 max-w-2xl sm:mb-16">
           <p className="eyebrow mb-5">The promise</p>
           <h2 className="font-display text-[clamp(2rem,4.5vw,3rem)] leading-[1.1] text-ivory">
-            Access to a thoughtfully curated environment — not guaranteed
+            Access to a thoughtfully curated community — not guaranteed
             outcomes.
           </h2>
         </div>
@@ -47,7 +50,7 @@ export function ValuePillars() {
                 {pillar.title}
               </h3>
               <div className="my-6 h-px w-12 bg-gold/50" />
-              <p className="max-w-sm text-[0.98rem] leading-relaxed text-muted">
+              <p className="max-w-sm text-[0.98rem] leading-relaxed text-[color:var(--body)]">
                 {pillar.body}
               </p>
             </article>

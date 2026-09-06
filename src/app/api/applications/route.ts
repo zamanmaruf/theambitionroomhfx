@@ -14,7 +14,6 @@ export const runtime = "nodejs";
 
 type FieldErrors = Record<string, string[]>;
 
-/** Soft duplicate guard for a single server instance (best-effort). */
 const recentEmails = new Map<string, number>();
 const DUPLICATE_WINDOW_MS = 24 * 60 * 60 * 1000;
 
@@ -83,7 +82,6 @@ export async function POST(request: Request) {
     );
   }
 
-  // Honeypot — bots that fill hidden fields get a quiet 200
   if (
     typeof body === "object" &&
     body !== null &&
@@ -129,7 +127,7 @@ export async function POST(request: Request) {
         ok: false,
         code: "duplicate",
         message:
-          "It looks like you've already submitted an application using this email. We'll be in touch once it's been reviewed.",
+          "It looks like you've already submitted a membership application using this email. We'll be in touch if there's a next step.",
       },
       { status: 409 },
     );
@@ -138,11 +136,14 @@ export async function POST(request: Request) {
   const notification = await sendApplicationNotification({
     fullName: data.fullName,
     email: data.email,
-    phone: data.phone,
+    phone: data.phone || "",
     linkedinUrl,
     company: data.company,
     role: data.role,
     currentBuild: data.currentBuild,
+    whyJoin: data.whyJoin,
+    contribution: data.contribution,
+    referredBy: data.referredBy || "",
   });
 
   if (!notification.sent) {
@@ -150,7 +151,7 @@ export async function POST(request: Request) {
       {
         ok: false,
         code: "server_error",
-        message: "Something went wrong. Please try again shortly.",
+        message: "We couldn't submit your application. Please try again.",
       },
       { status: 500 },
     );
@@ -158,7 +159,6 @@ export async function POST(request: Request) {
 
   rememberEmail(data.email);
 
-  // Applicant confirmation is best-effort and must not block success
   void sendApplicationConfirmation({
     to: data.email,
     fullName: data.fullName,

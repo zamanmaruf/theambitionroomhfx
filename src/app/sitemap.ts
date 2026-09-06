@@ -2,18 +2,18 @@ import type { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/siteConfig";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [
-    {
-      url: siteConfig.url,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 1,
-    },
-    {
-      url: `${siteConfig.url}/apply`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
+  const routes = [
+    "",
+    "/membership",
+    "/membership/apply",
+    "/founders",
+    "/privacy",
   ];
+
+  return routes.map((path) => ({
+    url: `${siteConfig.url}${path}`,
+    lastModified: new Date(),
+    changeFrequency: path === "" ? "weekly" : "monthly",
+    priority: path === "" ? 1 : path.includes("apply") ? 0.6 : 0.8,
+  }));
 }

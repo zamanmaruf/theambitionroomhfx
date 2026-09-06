@@ -1,21 +1,22 @@
-import { InvitationButton } from "@/components/ui/Button";
+import { ReserveEventButton } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { Section } from "@/components/ui/Section";
-import { getVenueDisplay, siteConfig } from "@/lib/siteConfig";
+import { VenuePartnerHighlight } from "@/components/VenuePartnerHighlight";
+import { siteConfig } from "@/lib/siteConfig";
 
 const details = [
   { label: "Date", value: siteConfig.event.dateDisplay },
   { label: "Time", value: siteConfig.event.timeDisplay },
-  { label: "Location", value: `${siteConfig.event.city}, ${siteConfig.event.region}` },
-  { label: "Venue", value: getVenueDisplay() },
+  { label: "Venue", value: siteConfig.event.venue },
+  {
+    label: "Location",
+    value: `${siteConfig.event.city}, ${siteConfig.event.region}`,
+  },
 ] as const;
 
 export function EventSection() {
   return (
-    <Section
-      id="halifax-001"
-      className="border-y border-[var(--border)] bg-elevated py-24 sm:py-28 lg:py-32"
-    >
+    <Section id="halifax-001" className="py-24 sm:py-28 lg:py-32">
       <Reveal>
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-10">
           <div className="lg:col-span-6">
@@ -23,12 +24,18 @@ export function EventSection() {
             <h2 className="font-display text-[clamp(2.75rem,8vw,5rem)] leading-[0.95] tracking-[0.04em] text-ivory uppercase">
               {siteConfig.event.edition}
             </h2>
-            <p className="mt-8 max-w-md text-[1.02rem] leading-relaxed text-muted">
-              The inaugural gathering of The Ambition Room — a carefully shaped
-              evening for people who take their work, and each other, seriously.
+            <p className="mt-8 max-w-md text-[1.02rem] leading-relaxed text-[color:var(--body)]">
+              One room. A deliberately limited group. An evening designed around
+              conversations worth continuing.
             </p>
             <p className="mt-6 max-w-md text-sm leading-relaxed text-ivory/80">
-              {siteConfig.event.capacityDisplay}
+              Complimentary founding guest registration.
+              <br />
+              Approximately 100 places.
+            </p>
+            <p className="mt-6 max-w-md text-sm leading-relaxed text-muted">
+              For this founding event, a membership application is not required.
+              Registration does not constitute membership in The Ambition Room.
             </p>
           </div>
 
@@ -48,13 +55,15 @@ export function EventSection() {
             </dl>
 
             <div className="mt-10">
-              <InvitationButton placement="event" />
-              <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted">
-                Applications are reviewed individually to help preserve the
-                quality and intention of the room.
-              </p>
+              <ReserveEventButton placement="halifax_section" />
             </div>
           </div>
+        </div>
+      </Reveal>
+
+      <Reveal delay={2}>
+        <div className="mt-14 border-t border-[var(--border)] pt-10 sm:mt-16 sm:pt-12">
+          <VenuePartnerHighlight />
         </div>
       </Reveal>
     </Section>

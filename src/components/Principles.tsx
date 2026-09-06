@@ -35,7 +35,7 @@ export function Principles() {
               <h3 className="font-display text-xl tracking-[0.06em] text-ivory uppercase sm:text-2xl">
                 {item.title}
               </h3>
-              <p className="mt-4 text-[0.98rem] leading-relaxed text-muted">
+              <p className="mt-4 text-[0.98rem] leading-relaxed text-[color:var(--body)]">
                 {item.body}
               </p>
             </article>

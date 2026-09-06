@@ -1,11 +1,14 @@
-import { DiscoverButton, InvitationButton } from "@/components/ui/Button";
+import {
+  ExploreMembershipButton,
+  ReserveEventButton,
+} from "@/components/ui/Button";
 import { siteConfig } from "@/lib/siteConfig";
 
 export function Hero() {
   return (
     <section
       id="top"
-      className="relative flex min-h-[100svh] items-center overflow-hidden pt-[5.5rem] pb-20 sm:pt-24 sm:pb-24"
+      className="relative flex min-h-[92svh] items-center overflow-hidden pt-[5.5rem] pb-14 sm:pt-24 sm:pb-16"
       aria-labelledby="hero-heading"
     >
       <div className="hero-glow" aria-hidden="true" />
@@ -42,12 +45,14 @@ export function Hero() {
           </p>
 
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:mt-9 sm:flex-row sm:gap-7">
-            <InvitationButton placement="hero" />
-            <DiscoverButton />
+            <ReserveEventButton placement="hero">
+              Reserve Halifax #001
+            </ReserveEventButton>
+            <ExploreMembershipButton />
           </div>
 
           <p className="mt-5 text-[0.68rem] tracking-[0.16em] text-muted uppercase sm:mt-6">
-            Limited capacity · Application required
+            Halifax #001 · Complimentary guest registration · Limited capacity
           </p>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import { Resend } from "resend";
 import { siteConfig } from "@/lib/siteConfig";
 
-export type ApplicationNotificationPayload = {
+export type MembershipApplicationPayload = {
   fullName: string;
   email: string;
   phone: string;
@@ -9,6 +9,9 @@ export type ApplicationNotificationPayload = {
   company: string;
   role: string;
   currentBuild: string;
+  whyJoin: string;
+  contribution: string;
+  referredBy: string;
 };
 
 function getResendClient(): { resend: Resend; from: string } | null {
@@ -22,9 +25,8 @@ export function isEmailConfigured(): boolean {
   return getResendClient() !== null;
 }
 
-/** Notify the Ambition Room inbox with the full application. */
 export async function sendApplicationNotification(
-  application: ApplicationNotificationPayload,
+  application: MembershipApplicationPayload,
 ): Promise<{ sent: boolean; reason?: string }> {
   const client = getResendClient();
   if (!client) {
@@ -39,19 +41,28 @@ export async function sendApplicationNotification(
       from,
       to: inbox,
       replyTo: application.email,
-      subject: `New Application — ${application.fullName} · ${siteConfig.event.edition}`,
+      subject: `Membership Application — ${application.fullName}`,
       text: [
-        `New application for ${siteConfig.brand.name} — ${siteConfig.event.edition}`,
+        `New membership application for ${siteConfig.brand.name}`,
         "",
         `Name: ${application.fullName}`,
         `Email: ${application.email}`,
-        `Phone: ${application.phone}`,
+        `Phone: ${application.phone || "—"}`,
         `LinkedIn: ${application.linkedinUrl}`,
         `Company: ${application.company}`,
         `Role: ${application.role}`,
+        `Referred by: ${application.referredBy || "—"}`,
         "",
-        "What they're building:",
+        "What they're building / working on:",
         application.currentBuild,
+        "",
+        "Why they're interested:",
+        application.whyJoin,
+        "",
+        "What they would contribute:",
+        application.contribution,
+        "",
+        "Status: pending",
         "",
         "Reply to this email to respond directly to the applicant.",
       ].join("\n"),
@@ -67,7 +78,6 @@ export async function sendApplicationNotification(
   }
 }
 
-/** Optional confirmation to the applicant. */
 export async function sendApplicationConfirmation(options: {
   to: string;
   fullName: string;
@@ -84,15 +94,15 @@ export async function sendApplicationConfirmation(options: {
     const { error } = await resend.emails.send({
       from,
       to: options.to,
-      subject: "Application Received — The Ambition Room",
+      subject: "Membership Application Received — The Ambition Room",
       text: [
         `Hi ${firstName},`,
         "",
-        `We've received your request to join ${siteConfig.brand.name} — ${siteConfig.event.edition} on October 1.`,
+        `We've received your application for membership in ${siteConfig.brand.name}.`,
         "",
-        "Every application is reviewed individually to help us create a thoughtful mix of entrepreneurs and ambitious professionals.",
+        "Membership applications are considered individually. Submitting an application does not guarantee admission.",
         "",
-        "If approved, you'll receive private registration access by email.",
+        "If there is a strong fit, we'll be in touch with the next step.",
         "",
         siteConfig.brand.tagline,
         "",

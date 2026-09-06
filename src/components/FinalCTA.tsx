@@ -1,4 +1,8 @@
-import { InvitationButton } from "@/components/ui/Button";
+import Link from "next/link";
+import {
+  ExploreMembershipButton,
+  ReserveEventButton,
+} from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { Section } from "@/components/ui/Section";
 import { siteConfig } from "@/lib/siteConfig";
@@ -23,13 +27,27 @@ export function FinalCTA() {
             {siteConfig.brand.tagline}
           </p>
 
-          <div className="mt-12 flex justify-center">
-            <InvitationButton placement="final" />
+          <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-8">
+            <ReserveEventButton placement="final">
+              Reserve Halifax #001
+            </ReserveEventButton>
+            <ExploreMembershipButton />
           </div>
 
           <p className="mt-8 text-[0.7rem] tracking-[0.16em] text-muted uppercase">
             {siteConfig.brand.name} · {siteConfig.event.edition} ·{" "}
             {siteConfig.event.dateDisplay}
+          </p>
+
+          <p className="mt-6 text-sm text-muted">
+            Prefer the long view?{" "}
+            <Link
+              href={siteConfig.membership.path}
+              className="text-gold hover:underline"
+            >
+              Learn about membership
+            </Link>
+            .
           </p>
         </div>
       </Reveal>

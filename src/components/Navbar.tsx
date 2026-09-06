@@ -1,11 +1,14 @@
 "use client";
 
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { InvitationButton } from "@/components/ui/Button";
+import { ReserveEventButton } from "@/components/ui/Button";
 import { Logo } from "@/components/ui/Logo";
 import { siteConfig } from "@/lib/siteConfig";
 
 export function Navbar() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -46,8 +49,8 @@ export function Navbar() {
         className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5 sm:h-[4.25rem] sm:px-8 lg:px-10"
         aria-label="Primary"
       >
-        <a
-          href="#top"
+        <Link
+          href="/"
           className="group flex min-w-0 items-center gap-2.5 text-ivory sm:gap-3"
           onClick={close}
         >
@@ -60,21 +63,33 @@ export function Navbar() {
           <span className="font-display truncate text-[0.8rem] tracking-[0.14em] uppercase sm:text-[0.95rem] sm:tracking-[0.16em]">
             The Ambition Room
           </span>
-        </a>
+        </Link>
 
-        <ul className="hidden items-center gap-8 lg:flex">
-          {siteConfig.nav.map((item) => (
-            <li key={item.href}>
-              <a href={item.href} className="nav-link text-[0.72rem] tracking-[0.16em] uppercase">
-                {item.label}
-              </a>
-            </li>
-          ))}
+        <ul className="hidden items-center gap-7 lg:flex">
+          {siteConfig.nav.map((item) => {
+            const active =
+              item.href === "/"
+                ? pathname === "/"
+                : pathname.startsWith(item.href);
+            return (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  className={`nav-link text-[0.72rem] tracking-[0.16em] uppercase ${
+                    active ? "text-ivory after:scale-x-100" : ""
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
 
         <div className="hidden lg:block">
-          <InvitationButton
+          <ReserveEventButton
             placement="nav"
+            short
             className="!min-h-10 !px-4 !py-2 !text-[0.625rem]"
             showArrow={false}
           />
@@ -118,17 +133,17 @@ export function Navbar() {
         <ul className="mx-auto flex max-w-6xl flex-col gap-1 px-5 py-6 sm:px-8">
           {siteConfig.nav.map((item) => (
             <li key={item.href}>
-              <a
+              <Link
                 href={item.href}
                 className="block py-3 font-display text-2xl tracking-wide text-ivory"
                 onClick={close}
               >
                 {item.label}
-              </a>
+              </Link>
             </li>
           ))}
           <li className="pt-4">
-            <InvitationButton placement="mobile_nav" className="w-full" />
+            <ReserveEventButton placement="mobile_nav" className="w-full" />
           </li>
         </ul>
       </div>

@@ -1,13 +1,16 @@
 import { About } from "@/components/About";
 import { Audience } from "@/components/Audience";
 import { EventSection } from "@/components/EventSection";
+import { FAQ } from "@/components/FAQ";
 import { FinalCTA } from "@/components/FinalCTA";
 import { Footer } from "@/components/Footer";
+import { FoundersTeaser } from "@/components/FoundersTeaser";
 import { Hero } from "@/components/Hero";
-import { HowItWorks } from "@/components/HowItWorks";
 import { Navbar } from "@/components/Navbar";
 import { Principles } from "@/components/Principles";
+import { TheStandard } from "@/components/TheStandard";
 import { ValuePillars } from "@/components/ValuePillars";
+import { VenueSponsorBand } from "@/components/VenueSponsorBand";
 
 export default function HomePage() {
   return (
@@ -15,12 +18,15 @@ export default function HomePage() {
       <Navbar />
       <main id="main">
         <Hero />
+        <VenueSponsorBand />
         <About />
+        <TheStandard />
         <ValuePillars />
         <Audience />
         <EventSection />
-        <HowItWorks />
+        <FoundersTeaser />
         <Principles />
+        <FAQ />
         <FinalCTA />
       </main>
       <Footer />

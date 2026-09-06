@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const CURRENT_BUILD_MAX = 750;
+export const TEXT_MAX = 750;
 
 const linkedinPattern =
   /^(https?:\/\/)?(www\.)?linkedin\.com\/(in|pub|company)\/[A-Za-z0-9\-_%+/]+\/?$/i;
@@ -8,6 +8,23 @@ const linkedinPattern =
 function normalizeWhitespace(value: string): string {
   return value.trim().replace(/\s+/g, " ");
 }
+
+const optionalPhone = z
+  .string()
+  .transform(normalizeWhitespace)
+  .pipe(
+    z.union([
+      z.literal(""),
+      z
+        .string()
+        .min(7, "Please enter a valid phone number.")
+        .max(30, "Please enter a valid phone number.")
+        .refine((value) => {
+          const digits = value.replace(/\D/g, "");
+          return digits.length >= 7 && digits.length <= 15;
+        }, "Please enter a valid phone number."),
+    ]),
+  );
 
 export const applicationSchema = z.object({
   fullName: z
@@ -23,19 +40,7 @@ export const applicationSchema = z.object({
     .string()
     .transform((v) => v.trim().toLowerCase())
     .pipe(z.email("Enter a valid email address.")),
-  phone: z
-    .string()
-    .transform(normalizeWhitespace)
-    .pipe(
-      z
-        .string()
-        .min(7, "Please enter a valid phone number.")
-        .max(30, "Please enter a valid phone number.")
-        .refine((value) => {
-          const digits = value.replace(/\D/g, "");
-          return digits.length >= 7 && digits.length <= 15;
-        }, "Please enter a valid phone number."),
-    ),
+  phone: optionalPhone,
   linkedinUrl: z
     .string()
     .transform((v) => v.trim())
@@ -85,16 +90,35 @@ export const applicationSchema = z.object({
       z
         .string()
         .min(20, "Tell us briefly what you're currently working on.")
-        .max(
-          CURRENT_BUILD_MAX,
-          `Please keep this under ${CURRENT_BUILD_MAX} characters.`,
-        ),
+        .max(TEXT_MAX, `Please keep this under ${TEXT_MAX} characters.`),
     ),
+  whyJoin: z
+    .string()
+    .transform((v) => v.trim())
+    .pipe(
+      z
+        .string()
+        .min(20, "Please share why you're interested in membership.")
+        .max(TEXT_MAX, `Please keep this under ${TEXT_MAX} characters.`),
+    ),
+  contribution: z
+    .string()
+    .transform((v) => v.trim())
+    .pipe(
+      z
+        .string()
+        .min(20, "Please share what you would bring to the community.")
+        .max(TEXT_MAX, `Please keep this under ${TEXT_MAX} characters.`),
+    ),
+  referredBy: z
+    .string()
+    .transform(normalizeWhitespace)
+    .pipe(z.string().max(160, "Please keep this under 160 characters.")),
   acknowledgement: z
     .boolean()
     .refine(
       (value) => value === true,
-      "Please confirm you understand that applying does not guarantee an invitation.",
+      "Please confirm you understand that applying does not guarantee membership.",
     ),
   /** Honeypot — must remain empty */
   website: z.string().max(0, "Invalid submission."),
@@ -111,6 +135,9 @@ export const applicationDefaultValues: ApplicationFormValues = {
   company: "",
   role: "",
   currentBuild: "",
+  whyJoin: "",
+  contribution: "",
+  referredBy: "",
   acknowledgement: false,
   website: "",
 };

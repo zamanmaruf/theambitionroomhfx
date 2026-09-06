@@ -18,18 +18,18 @@ export function About() {
 
           <div className="space-y-6 text-[1.02rem] leading-relaxed text-[color:var(--body)] lg:col-span-6 lg:col-start-7 lg:pt-10">
             <p>
-              Traditional networking often prioritizes volume — more faces, more
-              cards, more noise. The Ambition Room is built around intentional
-              curation instead.
+              Traditional networking often rewards volume — more introductions,
+              more contacts, more noise.
             </p>
             <p>
-              We bring together entrepreneurs and ambitious professionals who
-              are building businesses, careers, ideas, relationships, and
-              opportunities.
+              The Ambition Room is built around something different.
             </p>
             <p className="text-ivory/90">
-              The purpose is not to collect contacts. The purpose is to meet
-              people worth speaking to again.
+              Fewer assumptions.
+              <br />
+              Better conversations.
+              <br />
+              People worth speaking to again.
             </p>
           </div>
         </div>
