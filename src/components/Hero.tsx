@@ -1,3 +1,4 @@
+import Image from "next/image";
 import {
   ExploreMembershipButton,
   ReserveEventButton,
@@ -8,11 +9,22 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="relative flex min-h-[92svh] items-center overflow-hidden pt-[5.5rem] pb-14 sm:pt-24 sm:pb-16"
+      className="relative flex min-h-[100svh] items-center overflow-hidden pt-[5.5rem] pb-16 sm:pt-24 sm:pb-20"
       aria-labelledby="hero-heading"
     >
-      <div className="hero-glow" aria-hidden="true" />
-      <div className="hero-geometry" aria-hidden="true" />
+      <div className="absolute inset-0" aria-hidden="true">
+        <Image
+          src="/hero-room.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,8,8,0.72)_0%,rgba(8,8,8,0.55)_38%,rgba(8,8,8,0.78)_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(8,8,8,0.15)_0%,rgba(8,8,8,0.55)_70%)]" />
+      </div>
+
       <div className="hero-frame" aria-hidden="true">
         <span className="hero-corner hero-corner-tl" />
         <span className="hero-corner hero-corner-tr" />
@@ -26,7 +38,7 @@ export function Hero() {
 
           <h1
             id="hero-heading"
-            className="font-display text-[clamp(2.85rem,11.5vw,6.5rem)] leading-[0.9] tracking-[0.06em] text-ivory"
+            className="font-display text-[clamp(2.85rem,11.5vw,6.5rem)] leading-[0.9] tracking-[0.06em] text-ivory drop-shadow-[0_2px_24px_rgba(0,0,0,0.45)]"
           >
             <span className="block font-medium uppercase">The Ambition</span>
             <span className="mt-1 block font-medium uppercase sm:mt-2">
@@ -36,7 +48,7 @@ export function Hero() {
 
           <div className="gold-rule mx-auto my-6 max-w-[9rem] sm:my-7" />
 
-          <p className="font-display text-[1.15rem] leading-snug tracking-[0.01em] text-ivory/88 sm:text-[1.35rem] md:text-[1.5rem]">
+          <p className="font-display text-[1.15rem] leading-snug tracking-[0.01em] text-ivory/92 sm:text-[1.35rem] md:text-[1.5rem]">
             {siteConfig.brand.tagline}
           </p>
 
